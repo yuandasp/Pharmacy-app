@@ -307,7 +307,6 @@ module.exports = {
         idcategoryOne,
         idcategoryTwo,
         idcategoryThree,
-        idpromo,
         name,
         price,
         description,
@@ -316,7 +315,11 @@ module.exports = {
         weight,
       } = req.body;
 
-      const createProductQuery = `INSERT INTO product (idpromo, name, price, description, stock, product_image, unit_product, weight) VALUES (${idpromo},${db.escape(
+      if (!name) {
+        return res.status(500).send({ message: "Product name is required!" });
+      }
+
+      const createProductQuery = `INSERT INTO product (name, price, description, stock, product_image, unit_product, weight) VALUES (${db.escape(
         name
       )},${db.escape(price)},${db.escape(description)},${db.escape(
         stock

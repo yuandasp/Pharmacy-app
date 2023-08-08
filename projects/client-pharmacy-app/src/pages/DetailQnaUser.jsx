@@ -38,6 +38,9 @@ function DetailQnaUser() {
     fetchDetailQuestion();
   }, []);
 
+  // console.log(moment(questions.answer_date).format());
+  console.log(questions);
+
   return (
     <div className="w-4/5 lg:w-3/5 h-full mx-auto mt-11">
       <div className="">
@@ -73,7 +76,7 @@ function DetailQnaUser() {
           </div>
           <div className="flex flex-col text-sm lg:text-base text-right gap-1 text-slate-500">
             <p>{moment(questions.date).format("DD-MM-YYYY")}</p>
-            <p>{moment(questions.date).format("h:mm:ss")}</p>
+            <p>{moment(questions.date).format("HH:mm:ss")}</p>
           </div>
         </div>
         <p>{questions.question}</p>
@@ -88,7 +91,7 @@ function DetailQnaUser() {
             </div>
             <div className="flex flex-col text-sm lg:text-base text-right gap-1 text-slate-500">
               <p>{moment(questions.answer_date).format("DD-MM-YYYY")}</p>
-              <p>{moment(questions.answer_date).format("h:mm:ss")}</p>
+              <p>{moment(questions.answer_date).format("HH:mm:ss")}</p>
             </div>
           </div>
           <div>

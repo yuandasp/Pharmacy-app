@@ -17,7 +17,7 @@ import { getAllCategory } from "../../../features/cartegory/categorySlice";
 import { AUTH_TOKEN } from "../../../helpers/constant";
 import axios from "axios";
 import { getAllUnitConversion } from "../../../features/unit/unitConversion";
-import { getAllPromo } from "../../../features/promo/promoProductSlice";
+// import { getAllPromo } from "../../../features/promo/promoProductSlice";
 
 function AddNewProductModal({ isOpen, onClose }) {
   const dispatch = useDispatch();
@@ -27,7 +27,7 @@ function AddNewProductModal({ isOpen, onClose }) {
     idcategoryOne: "",
     idcategoryTwo: "",
     idcategoryThree: "",
-    idpromo: "",
+    // idpromo: "",
     name: "",
     price: "",
     description: "",
@@ -39,7 +39,7 @@ function AddNewProductModal({ isOpen, onClose }) {
     idcategoryOne: "",
     idcategoryTwo: "",
     idcategoryThree: "",
-    idpromo: "",
+    // idpromo: "",
     name: "",
     price: "",
     description: "",
@@ -50,7 +50,7 @@ function AddNewProductModal({ isOpen, onClose }) {
   const [isLoading, setIsLoading] = useState(false);
   const categories = useSelector((state) => state.categories.categories);
   const units = useSelector((state) => state.units.units);
-  const promos = useSelector((state) => state.promos.promos);
+  // const promos = useSelector((state) => state.promos.promos);
   const [imagePreview, setImagePreview] = useState("");
   const [file, setFile] = useState();
   const [isAccept, setIsAccept] = useState(false);
@@ -85,7 +85,7 @@ function AddNewProductModal({ isOpen, onClose }) {
     formData.append("price", formAddNewProduct.price);
     formData.append("description", formAddNewProduct.description);
     formData.append("stock", formAddNewProduct.stock);
-    formData.append("idpromo", formAddNewProduct.idpromo || null);
+    // formData.append("idpromo", formAddNewProduct.idpromo || null);
     formData.append("unitProduct", formAddNewProduct.unitProduct);
     formData.append("weight", formAddNewProduct.weight);
     if (formAddNewProduct.idcategoryOne)
@@ -102,6 +102,7 @@ function AddNewProductModal({ isOpen, onClose }) {
         formData,
         { headers: { authorization: `Bearer ${token}` } }
       );
+
       setIsLoading(false);
       onClose();
       window.location.reload();
@@ -115,8 +116,7 @@ function AddNewProductModal({ isOpen, onClose }) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text:
-          error.response?.data?.message?.message || "Something went wrong!!",
+        text: error.response?.data?.message || "Something went wrong!!",
       });
       setIsLoading(false);
       navigate("/admin/products");
@@ -149,7 +149,7 @@ function AddNewProductModal({ isOpen, onClose }) {
 
   useEffect(() => {
     dispatch(getAllUnitConversion());
-    dispatch(getAllPromo());
+    // dispatch(getAllPromo());
   }, []);
 
   return (
@@ -232,7 +232,7 @@ function AddNewProductModal({ isOpen, onClose }) {
                   onChange={handleAddProductForm}
                 />
               </div>
-              <div className="flex justify-between items-center">
+              {/* <div className="flex justify-between items-center">
                 <p className=" text-slate-500">Promo</p>
                 <div className="flex w-2/3 border-slate-100 rounded-md">
                   <Select
@@ -251,7 +251,7 @@ function AddNewProductModal({ isOpen, onClose }) {
                     })}
                   </Select>
                 </div>
-              </div>
+              </div> */}
               <div className="flex justify-between items-center">
                 <p className=" text-slate-500">Unit Product</p>
                 <input
