@@ -25,7 +25,7 @@ const {
 const { relatedProductRouter } = require("./routes/index");
 
 const { db, query } = require("./database/index");
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 3000;
 const app = express();
 
 // API RajaOngkir
