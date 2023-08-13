@@ -11,7 +11,7 @@ module.exports = {
       const uploadPrescriptionQuery = `INSERT INTO prescription (idprescription, idadmin, iduser, prescription_image, status, date, price, idaddress, weight, doctor, patient)
       VALUES (null, null, ${db.escape(iduser)}, ${db.escape(
         filename
-      )}, "${db.escape(status)}", ${db.escape(
+      )}, ${db.escape(status)}, ${db.escape(
         format(Date.now(), "yyyy-MM-dd HH:mm:ss")
       )},null,null,null,null,null)`;
       const uploadPrescription = await query(uploadPrescriptionQuery);
