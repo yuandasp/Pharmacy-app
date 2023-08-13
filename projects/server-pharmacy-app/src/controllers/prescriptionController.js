@@ -7,9 +7,11 @@ module.exports = {
     try {
       const iduser = parseInt(req.params.iduser);
       const filename = "/" + req.file.filename;
-      const uploadPrescriptionQuery = `INSERT INTO prescription VALUES (null, null, ${db.escape(
-        iduser
-      )}, ${db.escape(filename)}, "ON QUEUE", ${db.escape(
+      const status = "ON QUEUE";
+      const uploadPrescriptionQuery = `INSERT INTO prescription (idprescription, idadmin, iduser, prescription_image, status, date, price, idaddress, weight, doctor, patient)
+      VALUES (null, null, ${db.escape(iduser)}, ${db.escape(
+        filename
+      )}, "${db.escape(status)}", ${db.escape(
         format(Date.now(), "yyyy-MM-dd HH:mm:ss")
       )},null,null,null,null,null)`;
       const uploadPrescription = await query(uploadPrescriptionQuery);
@@ -170,8 +172,7 @@ module.exports = {
           idPrescription
         )}`
       );
-      res.status(200).send({message:'Prescription has been canceled'})
-    
+      res.status(200).send({ message: "Prescription has been canceled" });
     } catch (error) {
       return res.status(400).send(error);
     }

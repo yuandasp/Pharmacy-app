@@ -16,13 +16,15 @@ module.exports = {
         bonusItems,
       } = req.body;
 
+      const status = "WAITING FOR PAYMENT";
+
       const setTransactionOrderQuery = `insert into transaction values (null, null, null, ${db.escape(
         iduser
       )}, ${db.escape(idpromo)}, ${db.escape(
         orderAddress.idaddress
       )} ,${db.escape(
         format(new Date(), "yyyy-MM-dd HH:mm:ss")
-      )},null, null, null, null, null, "WAITING FOR PAYMENT", ${db.escape(
+      )},null, null, null, null, null, ${db.escape(status)}, ${db.escape(
         orderPrice
       )}, null, ${db.escape(courierData)}, ${db.escape(
         serviceData.service
