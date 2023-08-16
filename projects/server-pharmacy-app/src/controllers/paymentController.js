@@ -6,6 +6,7 @@ module.exports = {
     try {
       const idtransaction = parseInt(req.params.idtransaction);
       const filename = "/" + req.file.filename;
+      const underReview = "UNDER REVIEW";
 
       if (filename === "") {
         return res
@@ -17,7 +18,7 @@ module.exports = {
         filename
       )}, review_date = ${db.escape(
         format(new Date(), "yyyy-MM-dd HH:mm:ss")
-      )} , status = "UNDER REVIEW" where idtransaction = ${db.escape(
+      )} , ${db.escape(underReview)} where idtransaction = ${db.escape(
         idtransaction
       )};`;
       const uploadPayment = await query(uploadPaymentQuery);

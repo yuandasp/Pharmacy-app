@@ -108,6 +108,7 @@ module.exports = {
       const search = req.query.search || "";
       const offset = limit * page;
       const { startDate, endDate } = JSON.parse(req.query.date);
+      const onProcess = "ON PROCESS";
 
       const totalRowsQuery = `select distinct transaction.iduser from transaction where transaction.onprocess_date is not null ${
         !startDate && !endDate
@@ -125,7 +126,9 @@ module.exports = {
       const totalOfRows = totalRows.length;
       const totalPages = Math.ceil(totalOfRows / limit);
 
-      const getUserTransactionQuery = `select sum(total) as TotalPrice, transaction.iduser, user.full_name, user.username from transaction inner join user on transaction.iduser = user.iduser inner join address on transaction.idaddress = address.idaddress where transaction.status = "ON PROCESS" and transaction.onprocess_date is not null
+      const getUserTransactionQuery = `select sum(total) as TotalPrice, transaction.iduser, user.full_name, user.username from transaction inner join user on transaction.iduser = user.iduser inner join address on transaction.idaddress = address.idaddress where transaction.status=${db.escape(
+        onProcess
+      )} and transaction.onprocess_date is not null
         ${
           !startDate && !endDate
             ? ``
@@ -168,8 +171,11 @@ module.exports = {
       const search = req.query.search || "";
       const offset = limit * page;
       const { startDate, endDate } = JSON.parse(req.query.date);
+      const onProcess = "ON PROCESS";
 
-      const getUserTransactionQuery = `select sum(total) as TotalPrice, transaction.iduser, user.full_name, user.username from transaction inner join user on transaction.iduser = user.iduser inner join address on transaction.idaddress = address.idaddress where transaction.status = "ON PROCESS" and transaction.onprocess_date is not null
+      const getUserTransactionQuery = `select sum(total) as TotalPrice, transaction.iduser, user.full_name, user.username from transaction inner join user on transaction.iduser = user.iduser inner join address on transaction.idaddress = address.idaddress where transaction.status=${db.escape(
+        onProcess
+      )} and transaction.onprocess_date is not null
       ${
         !startDate && !endDate
           ? ``

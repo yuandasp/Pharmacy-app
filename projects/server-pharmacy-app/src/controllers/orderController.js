@@ -73,11 +73,12 @@ module.exports = {
       const ascDescend = req.query.order || "desc";
       const offset = limit * page;
       const { startDate, endDate } = JSON.parse(req.query.date);
+      const waitingForPayment = "WAITING FOR PAYMENT";
 
       //querying total rows of data transaction from sql
       const totalRowsQuery = `select count(idtransaction) as totalOfRows from transaction where iduser=${db.escape(
         iduser
-      )} and status = "WAITING FOR PAYMENT"
+      )} and status=${db.escape(waitingForPayment)}
       ${
         !startDate && !endDate
           ? ``
@@ -99,7 +100,9 @@ module.exports = {
       const fetchWaitingOrderQuery = `select  transaction.idtransaction, transaction.idprescription, transaction.idadmin, transaction.iduser, transaction.idpromo, transaction.idaddress, transaction.waiting_date,
       transaction.review_date, transaction.onprocess_date, transaction.send_date, transaction.finished_date, transaction.cancel_date,
       transaction.status, transaction.total, transaction.payment_image,transaction.courier, transaction.service, transaction.description, transaction.freightCost, address.street, province.province, address.city_name, address.address_type, user.username, user.full_name, user.phone_number, user.email, address.postal_code
-      from transaction inner join address on transaction.idaddress = address.idaddress inner join user on transaction.iduser = user.iduser inner join province on address.idprovince = province.province_id where transaction.iduser = ${iduser} and status = "WAITING FOR PAYMENT"
+      from transaction inner join address on transaction.idaddress = address.idaddress inner join user on transaction.iduser = user.iduser inner join province on address.idprovince = province.province_id where transaction.iduser = ${iduser} and status=${db.escape(
+        waitingForPayment
+      )}
       ${
         !startDate && !endDate
           ? ``
@@ -156,9 +159,12 @@ module.exports = {
       const ascDescend = req.query.order || "desc";
       const offset = limit * page;
       const { startDate, endDate } = JSON.parse(req.query.date);
+      const waitingForPayment = "WAITING FOR PAYMENT";
 
       //querying total rows of data transaction from sql
-      const totalRowsQuery = `select count(idtransaction) as totalOfRows from transaction where status = "WAITING FOR PAYMENT" 
+      const totalRowsQuery = `select count(idtransaction) as totalOfRows from transaction where status=${db.escape(
+        waitingForPayment
+      )}
       ${
         !startDate && !endDate
           ? ``
@@ -179,7 +185,9 @@ module.exports = {
       const fetchAllWaitingOrderQuery = `select  transaction.idtransaction, transaction.idprescription, transaction.idadmin, transaction.iduser, transaction.idpromo, transaction.idaddress, transaction.waiting_date,
       transaction.review_date, transaction.onprocess_date, transaction.send_date, transaction.finished_date, transaction.cancel_date,
       transaction.status, transaction.total, transaction.payment_image,transaction.courier, transaction.service, transaction.description, transaction.freightCost, address.street, province.province, address.city_name, address.address_type, user.username, user.full_name, user.phone_number, user.email, address.postal_code
-      from transaction inner join address on transaction.idaddress = address.idaddress inner join user on transaction.iduser = user.iduser inner join province on address.idprovince = province.province_id where status = "WAITING FOR PAYMENT" 
+      from transaction inner join address on transaction.idaddress = address.idaddress inner join user on transaction.iduser = user.iduser inner join province on address.idprovince = province.province_id where status=${db.escape(
+        waitingForPayment
+      )} 
       ${
         !startDate && !endDate
           ? ``
@@ -242,11 +250,15 @@ module.exports = {
       const ascDescend = req.query.order || "desc";
       const offset = limit * page;
       const { startDate, endDate } = JSON.parse(req.query.date);
+      const complete = "COMPLETE";
+      const canceled = "CANCELED";
 
       //querying total rows of data transaction from sql
       const totalRowsQuery = `select count(idtransaction) as totalOfRows from transaction where iduser=${db.escape(
         iduser
-      )} and (status = "COMPLETE" or status = "CANCELED") and transaction.finished_date is not null 
+      )} and (status=${db.escape(complete)} or status=${db.escape(
+        canceled
+      )}) and transaction.finished_date is not null 
       ${
         !startDate && !endDate
           ? ``
@@ -267,7 +279,11 @@ module.exports = {
       const fetchFinishedOrderQuery = `select  transaction.idtransaction, transaction.idprescription, transaction.idadmin, transaction.iduser, transaction.idpromo, transaction.idaddress, transaction.waiting_date,
       transaction.review_date, transaction.onprocess_date, transaction.send_date, transaction.finished_date, transaction.cancel_date,
       transaction.status, transaction.total, transaction.payment_image,transaction.courier, transaction.service, transaction.description, transaction.freightCost, address.street, province.province, address.city_name, address.address_type, user.username, user.full_name, user.phone_number, user.email, address.postal_code
-      from transaction inner join address on transaction.idaddress = address.idaddress inner join user on transaction.iduser = user.iduser inner join province on address.idprovince = province.province_id where transaction.iduser = ${iduser} and (status = "COMPLETE" or status = "CANCELED") and transaction.finished_date is not null 
+      from transaction inner join address on transaction.idaddress = address.idaddress inner join user on transaction.iduser = user.iduser inner join province on address.idprovince = province.province_id where transaction.iduser = ${iduser} and status=${db.escape(
+        complete
+      )} or status=${db.escape(
+        canceled
+      )}) and transaction.finished_date is not null 
       ${
         !startDate && !endDate
           ? ``
@@ -324,9 +340,15 @@ module.exports = {
       const ascDescend = req.query.sort || "desc";
       const offset = limit * page;
       const { startDate, endDate } = JSON.parse(req.query.date);
+      const complete = "COMPLETE";
+      const canceled = "CANCELED";
 
       //querying total rows of data transaction from sql
-      const totalRowsQuery = `select count(idtransaction) as totalOfRows from transaction where (status = "COMPLETE" or status = "CANCELED") and transaction.finished_date is not null 
+      const totalRowsQuery = `select count(idtransaction) as totalOfRows from transaction where (status=${db.escape(
+        complete
+      )} or status=${db.escape(
+        canceled
+      )}) and transaction.finished_date is not null 
       ${
         !startDate && !endDate
           ? ``
@@ -347,7 +369,11 @@ module.exports = {
       const fetchFinishedOrderQuery = `select  transaction.idtransaction, transaction.idprescription, transaction.idadmin, transaction.iduser, transaction.idpromo, transaction.idaddress, transaction.waiting_date,
       transaction.review_date, transaction.onprocess_date, transaction.send_date, transaction.finished_date, transaction.cancel_date,
       transaction.status, transaction.total, transaction.payment_image,transaction.courier, transaction.service, transaction.description, transaction.freightCost, address.street, province.province, address.city_name, address.address_type, user.username, user.full_name, user.phone_number, user.email, address.postal_code
-      from transaction inner join address on transaction.idaddress = address.idaddress inner join user on transaction.iduser = user.iduser inner join province on address.idprovince = province.province_id where (status = "COMPLETE" or status = "CANCELED") and transaction.finished_date is not null 
+      from transaction inner join address on transaction.idaddress = address.idaddress inner join user on transaction.iduser = user.iduser inner join province on address.idprovince = province.province_id where (status=${db.escape(
+        complete
+      )} or status=${db.escape(
+        canceled
+      )}) and transaction.finished_date is not null 
       ${
         !startDate && !endDate
           ? ``
@@ -403,11 +429,14 @@ module.exports = {
       const ascDescend = req.query.order || "desc";
       const offset = limit * page;
       const { startDate, endDate } = JSON.parse(req.query.date);
+      const onTheWay = "ON THE WAY";
 
       //querying total rows of data transaction from sql
       const totalRowsQuery = `select count(idtransaction) as totalOfRows from transaction where iduser=${db.escape(
         iduser
-      )} and status = "ON THE WAY" and transaction.send_date is not null 
+      )} and status=${db.escape(
+        onTheWay
+      )} and transaction.send_date is not null 
       ${
         !startDate && !endDate
           ? ``
@@ -428,7 +457,9 @@ module.exports = {
       const fetchSendOrderQuery = `select  transaction.idtransaction, transaction.idprescription, transaction.idadmin, transaction.iduser, transaction.idpromo, transaction.idaddress, transaction.waiting_date,
       transaction.review_date, transaction.onprocess_date, transaction.send_date, transaction.finished_date, transaction.cancel_date,
       transaction.status, transaction.total, transaction.payment_image,transaction.courier, transaction.service, transaction.description, transaction.freightCost, address.street, province.province, address.city_name, address.address_type, user.username, user.full_name, user.phone_number, user.email, address.postal_code
-      from transaction inner join address on transaction.idaddress = address.idaddress inner join user on transaction.iduser = user.iduser inner join province on address.idprovince = province.province_id where transaction.iduser = ${iduser} and status = "ON THE WAY" and transaction.send_date is not null 
+      from transaction inner join address on transaction.idaddress = address.idaddress inner join user on transaction.iduser = user.iduser inner join province on address.idprovince = province.province_id where transaction.iduser = ${iduser} and status=${db.escape(
+        onTheWay
+      )} and transaction.send_date is not null 
       ${
         !startDate && !endDate
           ? ``
@@ -484,9 +515,12 @@ module.exports = {
       const ascDescend = req.query.sort || "desc";
       const offset = limit * page;
       const { startDate, endDate } = JSON.parse(req.query.date);
+      const onTheWay = "ON THE WAY";
 
       //querying total rows of data transaction from sql
-      const totalRowsQuery = `select count(idtransaction) as totalOfRows from transaction where status = "ON THE WAY" and transaction.send_date is not null 
+      const totalRowsQuery = `select count(idtransaction) as totalOfRows from transaction where status=${db.escape(
+        onTheWay
+      )} and transaction.send_date is not null 
       ${
         !startDate && !endDate
           ? ``
@@ -507,7 +541,9 @@ module.exports = {
       const fetchSendOrderQuery = `select  transaction.idtransaction, transaction.idprescription, transaction.idadmin, transaction.iduser, transaction.idpromo, transaction.idaddress, transaction.waiting_date,
       transaction.review_date, transaction.onprocess_date, transaction.send_date, transaction.finished_date, transaction.cancel_date,
       transaction.status, transaction.total, transaction.payment_image,transaction.courier, transaction.service, transaction.description, transaction.freightCost, address.street, province.province, address.city_name, address.address_type, user.username, user.full_name, user.phone_number, user.email, address.postal_code
-      from transaction inner join address on transaction.idaddress = address.idaddress inner join user on transaction.iduser = user.iduser inner join province on address.idprovince = province.province_id where status = "ON THE WAY" and transaction.send_date is not null 
+      from transaction inner join address on transaction.idaddress = address.idaddress inner join user on transaction.iduser = user.iduser inner join province on address.idprovince = province.province_id where status=${db.escape(
+        onTheWay
+      )} and transaction.send_date is not null 
       ${
         !startDate && !endDate
           ? ``
@@ -563,10 +599,13 @@ module.exports = {
       const ascDescend = req.query.order || "desc";
       const offset = limit * page;
       const { startDate, endDate } = JSON.parse(req.query.date);
+      const onProcess = "ON PROCESS";
       //querying total rows of data transaction from sql
       const totalRowsQuery = `select count(idtransaction) as totalOfRows from transaction where iduser=${db.escape(
         iduser
-      )} and status = "ON PROCESS" and transaction.onprocess_date is not null 
+      )} and status=${db.escape(
+        onProcess
+      )} and transaction.onprocess_date is not null 
       ${
         !startDate && !endDate
           ? ``
@@ -588,7 +627,9 @@ module.exports = {
       const fetchOnProcessOrderQuery = `select  transaction.idtransaction, transaction.idprescription, transaction.idadmin, transaction.iduser, transaction.idpromo, transaction.idaddress, transaction.waiting_date,
       transaction.review_date, transaction.onprocess_date, transaction.send_date, transaction.finished_date, transaction.cancel_date,
       transaction.status, transaction.total, transaction.payment_image,transaction.courier, transaction.service, transaction.description, transaction.freightCost, address.street, province.province, address.city_name, address.address_type, user.username, user.full_name, user.phone_number, user.email, address.postal_code
-      from transaction inner join address on transaction.idaddress = address.idaddress inner join user on transaction.iduser = user.iduser inner join province on address.idprovince = province.province_id where transaction.iduser = ${iduser} and status = "ON PROCESS" and transaction.onprocess_date is not null 
+      from transaction inner join address on transaction.idaddress = address.idaddress inner join user on transaction.iduser = user.iduser inner join province on address.idprovince = province.province_id where transaction.iduser = ${iduser} and status=${db.escape(
+        onProcess
+      )} and transaction.onprocess_date is not null 
       ${
         !startDate && !endDate
           ? ``
@@ -644,9 +685,12 @@ module.exports = {
       const ascDescend = req.query.sort || "asc";
       const offset = limit * page;
       const { startDate, endDate } = JSON.parse(req.query.date);
+      const onProcess = "ON PROCESS";
 
       //querying total rows of data transaction from sql
-      const totalRowsQuery = `select count(idtransaction) as totalOfRows from transaction where status = "ON PROCESS" and transaction.onprocess_date is not null 
+      const totalRowsQuery = `select count(idtransaction) as totalOfRows from transaction where status=${db.escape(
+        onProcess
+      )} and transaction.onprocess_date is not null 
       ${
         !startDate && !endDate
           ? ``
@@ -667,7 +711,9 @@ module.exports = {
       const fetchOnProcessOrderQuery = `select  transaction.idtransaction, transaction.idprescription, transaction.idadmin, transaction.iduser, transaction.idpromo, transaction.idaddress, transaction.waiting_date,
       transaction.review_date, transaction.onprocess_date, transaction.send_date, transaction.finished_date, transaction.cancel_date,
       transaction.status, transaction.total, transaction.payment_image,transaction.courier, transaction.service, transaction.description, transaction.freightCost, address.street, province.province, address.city_name, address.address_type, user.username, user.full_name, user.phone_number, user.email, address.postal_code
-      from transaction inner join address on transaction.idaddress = address.idaddress inner join user on transaction.iduser = user.iduser inner join province on address.idprovince = province.province_id where status = "ON PROCESS" and transaction.onprocess_date is not null 
+      from transaction inner join address on transaction.idaddress = address.idaddress inner join user on transaction.iduser = user.iduser inner join province on address.idprovince = province.province_id where status=${db.escape(
+        onProcess
+      )} and transaction.onprocess_date is not null 
       ${
         !startDate && !endDate
           ? ``
@@ -723,11 +769,15 @@ module.exports = {
       const ascDescend = req.query.order || "desc";
       const offset = limit * page;
       const { startDate, endDate } = JSON.parse(req.query.date);
+      const underReview = "UNDER REVIEW";
+      const paymentConfirmed = "PAYMENT CONFIRMED";
 
       //querying total rows of data transaction from sql
       const totalRowsQuery = `select count(idtransaction) as totalOfRows from transaction where iduser=${db.escape(
         iduser
-      )} and (status = "UNDER REVIEW" or status = "PAYMENT CONFIRMED") and transaction.review_date is not null and transaction.payment_image is not null 
+      )} and (status=${db.escape(underReview)} or status=${db.escape(
+        paymentConfirmed
+      )}) and transaction.review_date is not null and transaction.payment_image is not null 
       ${
         !startDate && !endDate
           ? ``
@@ -749,7 +799,11 @@ module.exports = {
       const fetchReviewOrderQuery = `select  transaction.idtransaction, transaction.idprescription, transaction.idadmin, transaction.iduser, transaction.idpromo, transaction.idaddress, transaction.waiting_date,
       transaction.review_date, transaction.onprocess_date, transaction.send_date, transaction.finished_date, transaction.cancel_date,
       transaction.status, transaction.total, transaction.payment_image,transaction.courier, transaction.service, transaction.description, transaction.freightCost, address.street, province.province, address.city_name, address.address_type, user.username, user.full_name, user.phone_number, user.email, address.postal_code
-      from transaction inner join address on transaction.idaddress = address.idaddress inner join user on transaction.iduser = user.iduser inner join province on address.idprovince = province.province_id where transaction.iduser = ${iduser} and (status = "UNDER REVIEW" or status = "PAYMENT CONFIRMED") and transaction.review_date is not null and transaction.payment_image is not null 
+      from transaction inner join address on transaction.idaddress = address.idaddress inner join user on transaction.iduser = user.iduser inner join province on address.idprovince = province.province_id where transaction.iduser = ${iduser} and (status=${db.escape(
+        underReview
+      )} or status=${db.escape(
+        paymentConfirmed
+      )}) and transaction.review_date is not null and transaction.payment_image is not null 
       ${
         !startDate && !endDate
           ? ``
@@ -806,9 +860,12 @@ module.exports = {
       const ascDescend = req.query.order || "desc";
       const offset = limit * page;
       const { startDate, endDate } = JSON.parse(req.query.date);
+      const underReview = "UNDER REVIEW";
 
       //querying total rows of data transaction from sql
-      const totalRowsQuery = `select count(idtransaction) as totalOfRows from transaction where status = "UNDER REVIEW" and transaction.review_date is not null and transaction.payment_image is not null 
+      const totalRowsQuery = `select count(idtransaction) as totalOfRows from transaction where status=${db.escape(
+        underReview
+      )} and transaction.review_date is not null and transaction.payment_image is not null 
       ${
         !startDate && !endDate
           ? ``
@@ -829,7 +886,9 @@ module.exports = {
       const fetchReviewOrderQuery = `select  transaction.idtransaction, transaction.idprescription, transaction.idadmin, transaction.iduser, transaction.idpromo, transaction.idaddress, transaction.waiting_date,
       transaction.review_date, transaction.onprocess_date, transaction.send_date, transaction.finished_date, transaction.cancel_date,
       transaction.status, transaction.total, transaction.payment_image,transaction.courier, transaction.service, transaction.description, transaction.freightCost, address.street, province.province, address.city_name, address.address_type, user.username, user.full_name, user.phone_number, user.email, address.postal_code
-      from transaction inner join address on transaction.idaddress = address.idaddress inner join user on transaction.iduser = user.iduser inner join province on address.idprovince = province.province_id where status = "UNDER REVIEW" and transaction.review_date is not null and transaction.payment_image is not null 
+      from transaction inner join address on transaction.idaddress = address.idaddress inner join user on transaction.iduser = user.iduser inner join province on address.idprovince = province.province_id where status=${db.escape(
+        underReview
+      )} and transaction.review_date is not null and transaction.payment_image is not null 
       ${
         !startDate && !endDate
           ? ``
