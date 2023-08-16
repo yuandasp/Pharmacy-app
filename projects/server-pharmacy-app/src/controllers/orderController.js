@@ -893,7 +893,7 @@ module.exports = {
       //querying total rows of data transaction from sql
       const totalRowsQuery = `select count(idprescription) as totalOfRows from prescription where iduser=${db.escape(
         iduser
-      )} and (status = ${db.escape(onQueue)} OR status = ${db.escape(
+      )} and (status=${db.escape(onQueue)} OR status=${db.escape(
         waitingToCheckout
       )}) and prescription.date is not null and prescription.prescription_image is not null 
       ${
@@ -913,7 +913,11 @@ module.exports = {
       const { totalOfRows } = totalRows[0];
       const totalPages = Math.ceil(totalOfRows / limit);
 
-      const fetchTransactionOrderQuery = `select * from prescription where iduser = ${iduser} and (status = "ON QUEUE" OR status = "WAITING TO CHECKOUT") and prescription.date is not null and prescription.prescription_image is not null
+      const fetchTransactionOrderQuery = `select * from prescription where iduser = ${iduser} and (status=${db.escape(
+        onQueue
+      )} OR status=${db.escape(
+        waitingToCheckout
+      )}) and prescription.date is not null and prescription.prescription_image is not null
       ${
         !startDate && !endDate
           ? ``
@@ -963,9 +967,9 @@ module.exports = {
       const waitingToCheckout = "WAITING TO CHECKOUT";
 
       //querying total rows of data transaction from sql
-      const totalRowsQuery = `select count(idprescription) as totalOfRows from prescription where (status = ${db.escape(
+      const totalRowsQuery = `select count(idprescription) as totalOfRows from prescription where (status=${db.escape(
         onQueue
-      )} OR status = ${db.escape(
+      )} OR status=${db.escape(
         waitingToCheckout
       )}) and prescription.date is not null and prescription.prescription_image is not null
       ${
@@ -986,9 +990,9 @@ module.exports = {
       const totalPages = Math.ceil(totalOfRows / limit);
 
       const fetchPrescriptionOrderQuery = `select prescription.idprescription, prescription.idadmin, prescription.iduser, user.username, user.full_name,user.email, prescription.prescription_image,
-      prescription.status, prescription.date from prescription inner join user on prescription.iduser = user.iduser where (status = ${db.escape(
+      prescription.status, prescription.date from prescription inner join user on prescription.iduser = user.iduser where (status=${db.escape(
         onQueue
-      )} OR status = ${db.escape(
+      )} OR status=${db.escape(
         waitingToCheckout
       )}) and prescription.date is not null and prescription.prescription_image is not null
       ${
@@ -1033,7 +1037,7 @@ module.exports = {
       const idAdmin = req.params.idadmin;
       const { idtransaction } = req.body;
       const paymentConfirmed = "PAYMENT CONFIRMED";
-      const acceptIdTransactionQuery = `update transaction set status = ${db.escape(
+      const acceptIdTransactionQuery = `update transaction set status=${db.escape(
         paymentConfirmed
       )}, idadmin=${db.escape(idAdmin)} where idtransaction = ${idtransaction}`;
       const acceptIdTransaction = await query(acceptIdTransactionQuery);
@@ -1058,7 +1062,7 @@ module.exports = {
       const iduser = req.params.iduser;
       const { idtransaction, orderProduct } = req.body;
       const onProcess = "ON PROCESS";
-      const acceptIdTransactionQuery = `update transaction set status = ${db.escape(
+      const acceptIdTransactionQuery = `update transaction set status=${db.escape(
         onProcess
       )}, onprocess_date = ${db.escape(
         format(new Date(), "yyyy-MM-dd HH:mm:ss")
@@ -1101,7 +1105,7 @@ module.exports = {
       const idAdmin = req.params.idadmin;
       const { idtransaction } = req.body;
       const waitingForPayment = "WAITING FOR PAYMENT";
-      const rejectIdTransactionQuery = `update transaction set status = ${db.escape(
+      const rejectIdTransactionQuery = `update transaction set status=${db.escape(
         waitingForPayment
       )}, cancel_date=${db.escape(
         format(new Date(), "yyyy-MM-dd HH:mm:ss")
@@ -1130,7 +1134,7 @@ module.exports = {
       const idAdmin = req.params.idadmin;
       const { idtransaction } = req.body;
       const onTheWay = "ON THE WAY";
-      const submitIdTransactionQuery = `update transaction set status = ${db.escape(
+      const submitIdTransactionQuery = `update transaction set status=${db.escape(
         onTheWay
       )}, send_date=${db.escape(
         format(new Date(), "yyyy-MM-dd HH:mm:ss")
@@ -1156,7 +1160,7 @@ module.exports = {
       const iduser = req.params.iduser;
       const { idtransaction } = req.body;
       const complete = "COMPLETE";
-      const completeIdTransactionQuery = `update transaction set status = ${db.escape(
+      const completeIdTransactionQuery = `update transaction set status=${db.escape(
         complete
       )}, finished_date=${db.escape(
         format(new Date(), "yyyy-MM-dd HH:mm:ss")
@@ -1182,7 +1186,7 @@ module.exports = {
     const { idTransaction, email } = req.body;
     const canceled = "CANCELED";
     await query(
-      `update transaction set status = ${db.escape(
+      `update transaction set status=${db.escape(
         canceled
       )}, finished_date=${db.escape(
         format(new Date(), "yyyy-MM-dd HH:mm:ss")
@@ -1207,7 +1211,7 @@ module.exports = {
     const { idTransaction, email } = req.body;
     const canceled = "CANCELED";
     await query(
-      `update transaction set status = ${db.escape(
+      `update transaction set status=${db.escape(
         canceled
       )}, finished_date=${db.escape(
         format(new Date(), "yyyy-MM-dd HH:mm:ss")
