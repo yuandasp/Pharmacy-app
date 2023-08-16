@@ -78,7 +78,7 @@ module.exports = {
       //querying total rows of data transaction from sql
       const totalRowsQuery = `select count(idtransaction) as totalOfRows from transaction where iduser=${db.escape(
         iduser
-      )} and status=${db.escape(waitingForPayment)},
+      )} and status=${db.escape(waitingForPayment)}
       ${
         !startDate && !endDate
           ? ``
